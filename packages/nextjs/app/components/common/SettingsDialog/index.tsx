@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import Settings from "./Settings";
 import { useMediaQuery } from "usehooks-ts";
@@ -13,21 +15,13 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "~~/components/ui/drawer";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "~~/components/ui/halo-dialog";
-import { cn } from "~~/lib/utils";
+import { Dialog, DialogContent, DialogTrigger } from "~~/components/ui/halo-dialog";
 
-type SettingsDialog = {
+interface SettingsDialog {
   trigger: React.ReactNode;
-};
+}
 
-export const SettingsDialog = ({ trigger }: SettingsDialog) => {
+const SettingsDialog = ({ trigger }: SettingsDialog) => {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -67,3 +61,5 @@ export const SettingsDialog = ({ trigger }: SettingsDialog) => {
     </Drawer>
   );
 };
+
+export default SettingsDialog;

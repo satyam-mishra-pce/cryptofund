@@ -11,8 +11,11 @@ const Hero = () => {
         }}
       ></div>
       <div className="absolute -top-16 -right-16 h-40 w-40 rounded-full opacity-85 bg-violet-500/85 blur-xl"></div>
-      <img src="/block-assist-mono.svg" className="absolute top-0 right-0 h-20" />
-      <h1 className="text-xl font-bold scale-100">Chats</h1>
+      <img src="/block-assist-mono.svg" className="absolute top-5 right-5 h-8" />
+      <div>
+        <h1 className="text-xl font-bold scale-100">CryptoFund</h1>
+        <h2 className="text-sm text-muted-foreground scale-100">Powered by MANTA</h2>
+      </div>
     </div>
   );
 };

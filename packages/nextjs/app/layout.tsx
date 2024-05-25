@@ -1,3 +1,5 @@
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar/index";
 import "@rainbow-me/rainbowkit/styles.css";
 import { Metadata } from "next";
 import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
@@ -46,7 +48,17 @@ export const metadata: Metadata = {
 };
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
-  return <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>;
+  return (
+    <ScaffoldEthAppWithProviders>
+      <div className="flex flex-1 w-full flex-row">
+        <Sidebar />
+        <main className="flex flex-col flex-1 gap-10">
+          <Header />
+          {children}
+        </main>
+      </div>
+    </ScaffoldEthAppWithProviders>
+  );
 };
 
 export default ScaffoldEthApp;

@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import localFont from "next/font/local";
 import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
-import { Footer } from "~~/components/Footer";
-import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { ProgressBar } from "~~/components/scaffold-eth/ProgressBar";
 import useTheme, { ThemeProvider } from "~~/contexts/ThemeContext";
@@ -34,6 +32,91 @@ export const queryClient = new QueryClient({
     },
   },
 });
+const dmSans = localFont({
+  src: [
+    {
+      path: "assets/fonts/DMSans-ExtraLight.ttf",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "assets/fonts/DMSans-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "assets/fonts/DMSans-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "assets/fonts/DMSans-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "assets/fonts/DMSans-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "assets/fonts/DMSans-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "assets/fonts/DMSans-ExtraBold.ttf",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "assets/fonts/DMSans-Black.ttf",
+      weight: "900",
+      style: "normal",
+    },
+    {
+      path: "assets/fonts/DMSans-ExtraLightItalic.ttf",
+      weight: "200",
+      style: "italic",
+    },
+    {
+      path: "assets/fonts/DMSans-LightItalic.ttf",
+      weight: "300",
+      style: "italic",
+    },
+    {
+      path: "assets/fonts/DMSans-Italic.ttf",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "assets/fonts/DMSans-MediumItalic.ttf",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "assets/fonts/DMSans-SemiBoldItalic.ttf",
+      weight: "600",
+      style: "italic",
+    },
+    {
+      path: "assets/fonts/DMSans-BoldItalic.ttf",
+      weight: "700",
+      style: "italic",
+    },
+    {
+      path: "assets/fonts/DMSans-ExtraBoldItalic.ttf",
+      weight: "800",
+      style: "italic",
+    },
+    {
+      path: "assets/fonts/DMSans-BlackItalic.ttf",
+      weight: "900",
+      style: "italic",
+    },
+  ],
+  variable: "--dm-sans",
+});
 
 export const Web3Providers = ({ children }: { children: React.ReactNode }) => {
   const { resolvedTheme } = useTheme();
@@ -45,13 +128,14 @@ export const Web3Providers = ({ children }: { children: React.ReactNode }) => {
   }, []);
   return (
     <html suppressHydrationWarning className={isDarkMode ? "dark" : ""}>
-      <body>
+      <body style={{ "--font-dm": dmSans.style.fontFamily } as React.CSSProperties}>
         <WagmiProvider config={wagmiConfig}>
           <QueryClientProvider client={queryClient}>
             <ProgressBar />
             <RainbowKitProvider
               avatar={BlockieAvatar}
               theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
+              data-superparent=""
             >
               <ScaffoldEthApp>{children}</ScaffoldEthApp>
             </RainbowKitProvider>

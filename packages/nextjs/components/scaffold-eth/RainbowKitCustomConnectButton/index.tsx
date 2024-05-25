@@ -1,13 +1,11 @@
 "use client";
 
 // @refresh reset
-import { Balance } from "../Balance";
 import { AddressInfoDropdown } from "./AddressInfoDropdown";
-import { AddressQRCodeModal } from "./AddressQRCodeModal";
 import { WrongNetworkDropdown } from "./WrongNetworkDropdown";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Address } from "viem";
-import { useNetworkColor } from "~~/hooks/scaffold-eth";
+import { Button } from "~~/components/ui/button";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
 
@@ -15,7 +13,6 @@ import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
  * Custom Wagmi Connect Button (watch balance + custom design)
  */
 export const RainbowKitCustomConnectButton = () => {
-  const networkColor = useNetworkColor();
   const { targetNetwork } = useTargetNetwork();
 
   return (
@@ -31,9 +28,9 @@ export const RainbowKitCustomConnectButton = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <button className="btn btn-primary btn-sm" onClick={openConnectModal} type="button">
-                    Connect Wallet
-                  </button>
+                  <Button onClick={openConnectModal} size={"sm"} className="rounded-full px-3">
+                    <i className="fa-regular fa-wallet mr-2"></i>Connect Wallet
+                  </Button>
                 );
               }
 
@@ -42,21 +39,14 @@ export const RainbowKitCustomConnectButton = () => {
               }
 
               return (
-                <>
-                  <div className="flex flex-col items-center mr-1">
-                    <Balance address={account.address as Address} className="min-h-0 h-auto" />
-                    <span className="text-xs" style={{ color: networkColor }}>
-                      {chain.name}
-                    </span>
-                  </div>
-                  <AddressInfoDropdown
-                    address={account.address as Address}
-                    displayName={account.displayName}
-                    ensAvatar={account.ensAvatar}
-                    blockExplorerAddressLink={blockExplorerAddressLink}
-                  />
-                  <AddressQRCodeModal address={account.address as Address} modalId="qrcode-modal" />
-                </>
+                <AddressInfoDropdown
+                  address={account.address as Address}
+                  displayName={account.displayName}
+                  ensAvatar={account.ensAvatar}
+                  blockExplorerAddressLink={blockExplorerAddressLink}
+                  variant={"accentGhost"}
+                  className="border-transparent bg-primary/20 rounded-full px-1.5 py-2 text-black hover:text-accent-foreground"
+                />
               );
             })()}
           </>

@@ -16,7 +16,7 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-const getSafeItem = <T,>(key: string, fallback: string): string => {
+const getSafeItem = (key: string, fallback: string): string => {
   const value = window.localStorage.getItem(key);
   return value ? value : fallback;
 };
@@ -30,6 +30,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [userTheme, setUserTheme] = useState<Theme>("light");
   const isSystemDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const [resolvedTheme, setResolvedTheme] = useState(userTheme);
+  console.log(resolvedTheme);
 
   //Initializer
   useEffect(() => {
@@ -88,11 +89,11 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   return (
     <ThemeContext.Provider
       value={{
-        theme,
+        theme: "light",
         setTheme: value => updateTheme(value),
-        userTheme,
+        userTheme: "light",
         setUserTheme: value => updateUserTheme(value),
-        resolvedTheme,
+        resolvedTheme: "light",
       }}
     >
       {children}
