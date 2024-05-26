@@ -8,6 +8,7 @@ contract CryptoFund {
 
 	struct User {
 		string name;
+		string bio;
 		address userAddress;
 	}
 
@@ -22,11 +23,13 @@ contract CryptoFund {
 
 	struct ProjectMetadata {
 		User createdBy;
+		uint idx;
 		string pitch;
 		uint askAmount;
 		uint interestRate;
 		string[] assetLinks;
 		uint durationInDays;
+		string timestamp;
 	}
 
 	struct ProjectData {
@@ -71,9 +74,10 @@ contract CryptoFund {
 		_;
 	}
 
-	function updateUser(string memory name) public {
+	function updateUser(string memory name, string memory bio) public {
 		addressToUser[msg.sender] = User({
 			name: name,
+			bio: bio,
 			userAddress: msg.sender
 		});
 	}
@@ -83,15 +87,18 @@ contract CryptoFund {
 		uint askAmount,
 		uint interestRate,
 		string[] memory assetLinks,
-		uint durationInDays
+		uint durationInDays,
+		string memory timestamp
 	) public userExists {
 		ProjectMetadata memory metadata = ProjectMetadata({
 			createdBy: addressToUser[msg.sender],
 			pitch: pitch,
+			idx: projectCount,
 			askAmount: askAmount,
 			interestRate: interestRate,
 			assetLinks: assetLinks,
-			durationInDays: durationInDays
+			durationInDays: durationInDays,
+			timestamp: timestamp
 		});
 		ProjectStatus memory status = ProjectStatus({
 			isAskFulfilled: false,

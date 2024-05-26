@@ -14,7 +14,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const externalContracts = {
   3441006: {
     CRYPTOFUND: {
-      address: "0xC0F012f7d60098D14bFC6A84D130c42a0975f40D",
+      address: "0xa6bc0bc23fBcE3E8612c66234885C510b7a0319a",
       abi: [
         {
           inputs: [
@@ -53,6 +53,11 @@ const externalContracts = {
             {
               internalType: "string",
               name: "name",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "bio",
               type: "string",
             },
             {
@@ -104,6 +109,11 @@ const externalContracts = {
               name: "durationInDays",
               type: "uint256",
             },
+            {
+              internalType: "string",
+              name: "timestamp",
+              type: "string",
+            },
           ],
           name: "createProject",
           outputs: [],
@@ -145,6 +155,11 @@ const externalContracts = {
                           type: "string",
                         },
                         {
+                          internalType: "string",
+                          name: "bio",
+                          type: "string",
+                        },
+                        {
                           internalType: "address",
                           name: "userAddress",
                           type: "address",
@@ -153,6 +168,11 @@ const externalContracts = {
                       internalType: "struct CryptoFund.User",
                       name: "createdBy",
                       type: "tuple",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "idx",
+                      type: "uint256",
                     },
                     {
                       internalType: "string",
@@ -178,6 +198,11 @@ const externalContracts = {
                       internalType: "uint256",
                       name: "durationInDays",
                       type: "uint256",
+                    },
+                    {
+                      internalType: "string",
+                      name: "timestamp",
+                      type: "string",
                     },
                   ],
                   internalType: "struct CryptoFund.ProjectMetadata",
@@ -263,6 +288,11 @@ const externalContracts = {
                           type: "string",
                         },
                         {
+                          internalType: "string",
+                          name: "bio",
+                          type: "string",
+                        },
+                        {
                           internalType: "address",
                           name: "userAddress",
                           type: "address",
@@ -271,6 +301,11 @@ const externalContracts = {
                       internalType: "struct CryptoFund.User",
                       name: "createdBy",
                       type: "tuple",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "idx",
+                      type: "uint256",
                     },
                     {
                       internalType: "string",
@@ -296,6 +331,11 @@ const externalContracts = {
                       internalType: "uint256",
                       name: "durationInDays",
                       type: "uint256",
+                    },
+                    {
+                      internalType: "string",
+                      name: "timestamp",
+                      type: "string",
                     },
                   ],
                   internalType: "struct CryptoFund.ProjectMetadata",
@@ -383,6 +423,11 @@ const externalContracts = {
                   type: "string",
                 },
                 {
+                  internalType: "string",
+                  name: "bio",
+                  type: "string",
+                },
+                {
                   internalType: "address",
                   name: "userAddress",
                   type: "address",
@@ -432,6 +477,11 @@ const externalContracts = {
                     {
                       internalType: "string",
                       name: "name",
+                      type: "string",
+                    },
+                    {
+                      internalType: "string",
+                      name: "bio",
                       type: "string",
                     },
                     {
@@ -514,6 +564,11 @@ const externalContracts = {
                   type: "string",
                 },
                 {
+                  internalType: "string",
+                  name: "bio",
+                  type: "string",
+                },
+                {
                   internalType: "address",
                   name: "userAddress",
                   type: "address",
@@ -572,6 +627,11 @@ const externalContracts = {
               name: "name",
               type: "string",
             },
+            {
+              internalType: "string",
+              name: "bio",
+              type: "string",
+            },
           ],
           name: "updateUser",
           outputs: [],
@@ -598,6 +658,11 @@ const externalContracts = {
                 {
                   internalType: "string",
                   name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "bio",
                   type: "string",
                 },
                 {

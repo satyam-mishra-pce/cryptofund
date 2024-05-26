@@ -19,14 +19,18 @@ const page = () => {
   };
 
   const userData: any = useUserData(address, chainId);
-  console.log("debug", userData);
-  const nickname = userData?.name ? userData.name : "";
-  console.log("debug nickname", nickname);
-  const [nicknameVal, setNicknameVal] = useState(nickname ? nickname : "New User");
+  const nickname = userData?.name ? (userData.name === "" ? "New User" : userData.name) : "New User";
+  const [nicknameVal, setNicknameVal] = useState(nickname);
   useEffect(() => {
     setNicknameVal(nickname);
   }, [nickname]);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
+
+  const bio = userData?.bio ? userData.bio : "";
+  const [bioVal, setBioVal] = useState(bio ? bio : "");
+  useEffect(() => {
+    setBioVal(bio);
+  }, [bio]);
 
   const { writeContractAsync: writeYourContractAsync } = useScaffoldWriteContract("CRYPTOFUND");
 
@@ -52,14 +56,14 @@ const page = () => {
                     ref={nicknameInputRef}
                   />
                   <button
-                    className=" text-lg text-muted-foreground hover:text-foreground self-center"
+                    className=" text-lg text-muted-foreground hover:text-foreground self-end"
                     onClick={() => nicknameInputRef.current?.focus()}
                   >
                     <i className="fa-solid fa-pencil"></i>
                   </button>
                 </div>
               </div>
-              <div className="flex justify-between px-6 items-center h-4 gap-2">
+              <div className="flex justify-between px-6 items-center h-4 gap-2 mt-1">
                 <span className="text-muted-foreground text-sm">{address}</span>
                 <Button size={"sm"}>
                   <i className="fa-regular fa-copy"></i>
@@ -69,19 +73,21 @@ const page = () => {
           </div>
 
           <div className="flex flex-col justify-start w-full gap-2">
-            {/* <span className="font-semibold text-lg border-b border-b-border">Bio</span> */}
-            {/* <textarea
+            <span className="font-semibold text-lg">Bio</span>
+            <textarea
               className="p-2 rounded-lg resize-none text-lg border border-b-border "
               rows={4}
               placeholder="Enter your bio"
-            /> */}
+              value={bioVal}
+              onChange={evt => setBioVal(evt.target.value)}
+            />
             <div className="flex w-full justify-end">
               <Button
                 onClick={async () => {
                   try {
                     await writeYourContractAsync({
                       functionName: "updateUser",
-                      args: [nicknameVal],
+                      args: [nicknameVal, bioVal],
                       // value: parseEther("0.1"),
                     });
                   } catch (e) {

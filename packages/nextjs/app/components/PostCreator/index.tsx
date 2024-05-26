@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "~~/components/ui/button";
+import { Input } from "~~/components/ui/input";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 const PostCreator = () => {
@@ -19,50 +20,74 @@ const PostCreator = () => {
         <i className="fa-regular fa-pen-line"></i>List your Project
       </span>
       <textarea
-        className="px-2 outline-none resize-none text-sm"
+        className="px-2 outline-none resize-none text-sm border-b border-b-border h-20"
         placeholder="Descrbe your Project"
         name="pitch"
         id=""
         value={pitchVal}
         onChange={evt => setPitchVal(evt.target.value)}
       ></textarea>
-      <div className="flex p-4">
-        <input
-          type="number"
-          onChange={evt => {
-            setAskAmount(Number(evt.target.value));
-          }}
-          value={askAmount}
-          name="askAmount"
-          placeholder="Ask Amount (USD)"
-        />
-        <input
-          type="number"
-          onChange={evt => {
-            setInterestRate(Number(evt.target.value));
-          }}
-          value={interestRate}
-          name="interesetRate"
-          placeholder="Interest Rate"
-        />
-        <input
-          type="number"
-          onChange={evt => {
-            setDurationInDays(Number(evt.target.value));
-          }}
-          value={durationInDays}
-          name="durationInDays"
-          placeholder="Duration in Days"
-        />
-        <input
-          type="text"
-          onChange={evt => {
-            setAssetLink(evt.target.value);
-          }}
-          value={assetLink}
-          name="assetLink"
-          placeholder="Asset Link"
-        />
+      <div className="flex flex-col gap-2 p-4 text-sm">
+        <div>
+          <label className="flex flex-row items-center gap-2">
+            <span className="font-bold">Ask Amount (USD)</span>
+            <Input
+              type="number"
+              className="flex-1 text-sm"
+              onChange={evt => {
+                setAskAmount(Number(evt.target.value));
+              }}
+              value={askAmount}
+              name="askAmount"
+              placeholder="Ask Amount (USD)"
+            />
+          </label>
+        </div>
+        <div>
+          <label className="flex flex-row items-center gap-2">
+            <span className="font-bold">Interest Rate</span>
+            <Input
+              type="number"
+              className="flex-1"
+              onChange={evt => {
+                setInterestRate(Number(evt.target.value));
+              }}
+              value={interestRate}
+              name="interestRate"
+              placeholder="Interest Rate"
+            />
+          </label>
+        </div>
+        <div>
+          <label className="flex flex-row items-center gap-2">
+            <span className="font-bold">Payout Duration (days)</span>
+            <Input
+              type="number"
+              className="flex-1"
+              onChange={evt => {
+                setDurationInDays(Number(evt.target.value));
+              }}
+              value={durationInDays}
+              name="durationInDays"
+              placeholder="Payout Duration (days)"
+            />
+          </label>
+        </div>
+        <div>
+          <label className="flex flex-row items-center gap-2">
+            <span className="font-bold">Asset Link</span>
+            <Input
+              type="string"
+              className="flex-1"
+              onChange={evt => {
+                setAssetLink(evt.target.value);
+              }}
+              value={assetLink}
+              name="assetLink"
+              placeholder="Asset Link"
+            />
+          </label>
+        </div>
       </div>
 
       <div className="p-2 border-t border-t-border w-full flex justify-end">
@@ -73,7 +98,14 @@ const PostCreator = () => {
             try {
               await publishProjectAsync({
                 functionName: "createProject",
-                args: [pitchVal, BigInt(askAmount), BigInt(interestRate), [assetLink], BigInt(durationInDays)],
+                args: [
+                  pitchVal,
+                  BigInt(askAmount),
+                  BigInt(interestRate),
+                  [assetLink],
+                  BigInt(durationInDays),
+                  new Date().getTime().toString(),
+                ],
                 // value: parseEther("0.1"),
               });
             } catch (e) {

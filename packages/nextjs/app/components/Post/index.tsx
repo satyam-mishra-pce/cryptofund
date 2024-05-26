@@ -25,6 +25,7 @@ const PostItemsList = ({}) => {
           return (
             <PostItem
               {...{
+                projectIdx: Number(postItem.metadata.idx),
                 address: postItem.metadata.createdBy.userAddress,
                 accountName: postItem.metadata.createdBy.name,
                 pitch: postItem.metadata.pitch,
@@ -35,6 +36,7 @@ const PostItemsList = ({}) => {
                 totalRemaining: Number(postItem.metadata.askAmount) - Number(postItem.data.totalFunded),
                 interestRate: Number(postItem.metadata.interestRate),
               }}
+              key={Number(postItem.metadata.idx)}
             />
           );
         })}
