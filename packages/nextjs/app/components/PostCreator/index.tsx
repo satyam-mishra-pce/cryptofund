@@ -9,9 +9,16 @@ const PostCreator = ({}) => {
       <textarea
         className="px-2 outline-none resize-none text-sm"
         placeholder="Descrbe your Project"
-        name=""
+        name="pitch"
         id=""
       ></textarea>
+      <div className="flex p-4">
+        <input type="number" name="askAmount" placeholder="Ask Amount" />
+        <input type="number" name="interesetRate" placeholder="Interest Rate" />
+        <input type="number" name="durationInDays" placeholder="Duration in Days" />
+        <input type="text" name="assetLint" placeholder="Asset Link" />
+      </div>
+
       <div className="p-2 border-t border-t-border w-full flex justify-end">
         <Button disabled className="gap-2">
           <i className="fa-solid fa-paper-plane-top"></i>

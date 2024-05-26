@@ -1,15 +1,44 @@
+"use client";
+
 import Link from "next/link";
+import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { Button } from "~~/components/ui/button";
 
-const PostItem = ({}) => {
+interface PostItemProps {
+  address: string;
+  accountName: string;
+  dateTime: string;
+  pitch: string;
+  assetLink: string;
+  likes: number;
+  proposals: number;
+  askAmount: number;
+  totalRemaining: number;
+  interestRate: number;
+}
+
+const PostItem = ({
+  address,
+}: // accountName,
+// dateTime,
+// pitch,
+// assetLink,
+// likes,
+// proposals,
+// askAmount,
+// totalRemaining,
+// interestRate,
+PostItemProps) => {
   return (
     <div className="bg-background-layer-10 w-full min-h-[300px] border border-border rounded-lg flex flex-col">
       <div className="border-b border-b-border flex flex-row p-3 gap-4 items-center">
-        <img
+        <BlockieAvatar address={address} size={30} />
+        {/* <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSi3YHpBO6H4AAzdPVkor5syi5Tl8eUgkAcUA8akut98g&s"
           alt="profilepic"
           className="rounded-full h-8"
-        />
+        /> */}
+
         <div className="flex flex-col">
           <span className="font-semibold">Account Name</span>
           <span className="text-muted-foreground text-xs">25 March 2024, 12:08 PM</span>
