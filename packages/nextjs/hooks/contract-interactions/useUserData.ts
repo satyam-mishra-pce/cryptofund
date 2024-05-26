@@ -5,8 +5,8 @@ import { Abi } from "abitype";
 import { useReadContract } from "wagmi";
 import externalContracts from "~~/contracts/externalContracts";
 
-const useUserData = (address: string | undefined) => {
-  if (!address) return undefined;
+const useUserData = (address: string | undefined, chainId: number | undefined) => {
+  // if (!address || !chainId) return undefined;
   // if (!(chainId in externalContracts)) return undefined;
   // let abi: Abi;
   // try {

@@ -9,7 +9,8 @@ import { NETWORKS_EXTRA_DATA } from "~~/utils/scaffold-eth";
  * Retrieves the connected wallet's network from scaffold.config or defaults to the 0th network in the list if the wallet is not connected.
  */
 export function useTargetNetwork(): { targetNetwork: ChainWithAttributes } {
-  const { chain } = useAccount();
+  // const { chain } = useAccount();
+  const chain = { id: 3441006 };
   const targetNetwork = useGlobalState(({ targetNetwork }) => targetNetwork);
   const setTargetNetwork = useGlobalState(({ setTargetNetwork }) => setTargetNetwork);
 

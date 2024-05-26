@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import { Button } from "~~/components/ui/button";
 import useUserData from "~~/hooks/contract-interactions/useUserData";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { getTargetNetworks } from "~~/utils/scaffold-eth";
 
 const page = () => {
@@ -17,7 +18,18 @@ const page = () => {
     return false;
   };
 
-  const userData = useUserData(address);
+  const userData: any = useUserData(address, chainId);
+  console.log("debug", userData);
+  const nickname = userData?.name ? userData.name : "";
+  console.log("debug nickname", nickname);
+  const [nicknameVal, setNicknameVal] = useState(nickname ? nickname : "New User");
+  useEffect(() => {
+    setNicknameVal(nickname);
+  }, [nickname]);
+  const nicknameInputRef = useRef<HTMLInputElement>(null);
+
+  const { writeContractAsync: writeYourContractAsync } = useScaffoldWriteContract("CRYPTOFUND");
+
   return (
     <div className="flex flex-col justify-center items-center w-full h-full">
       {address && chainId && isNetworkAllowed(chainId) ? (
@@ -31,14 +43,24 @@ const page = () => {
             <div className="flex flex-col">
               <div className="flex items-center px-4">
                 <div className="font-semibold text-4xl outline-none bg-transparent h-14 flex gap-4 p-1">
-                  <span contentEditable>{Number(userData?.userAddress) === 0 ? "" : userData?.name}</span>
-                  <button className=" text-lg text-muted-foreground hover:text-foreground self-center">
+                  <input
+                    onChange={evt => setNicknameVal(evt.target.value)}
+                    value={nicknameVal}
+                    className="border-none h-16 outline-none bg-transparent"
+                    placeholder="New User"
+                    style={{ width: `${nicknameVal.length + 1}ch` }}
+                    ref={nicknameInputRef}
+                  />
+                  <button
+                    className=" text-lg text-muted-foreground hover:text-foreground self-center"
+                    onClick={() => nicknameInputRef.current?.focus()}
+                  >
                     <i className="fa-solid fa-pencil"></i>
                   </button>
                 </div>
               </div>
-              <div className="flex justify-between px-4 items-center h-4 gap-2">
-                <span className="text-muted-foreground text-sm">0x83338c511E6A998d8fA4ed9bb92994Bfd1dC8709</span>
+              <div className="flex justify-between px-6 items-center h-4 gap-2">
+                <span className="text-muted-foreground text-sm">{address}</span>
                 <Button size={"sm"}>
                   <i className="fa-regular fa-copy"></i>
                 </Button>
@@ -48,13 +70,27 @@ const page = () => {
 
           <div className="flex flex-col justify-start w-full gap-2">
             {/* <span className="font-semibold text-lg border-b border-b-border">Bio</span> */}
-            <textarea
+            {/* <textarea
               className="p-2 rounded-lg resize-none text-lg border border-b-border "
               rows={4}
               placeholder="Enter your bio"
-            />
+            /> */}
             <div className="flex w-full justify-end">
-              <Button>Save</Button>
+              <Button
+                onClick={async () => {
+                  try {
+                    await writeYourContractAsync({
+                      functionName: "updateUser",
+                      args: [nicknameVal],
+                      // value: parseEther("0.1"),
+                    });
+                  } catch (e) {
+                    console.error("Error setting greeting:", e);
+                  }
+                }}
+              >
+                Save
+              </Button>
             </div>
           </div>
         </div>
