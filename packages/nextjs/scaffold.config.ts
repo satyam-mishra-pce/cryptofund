@@ -39,7 +39,7 @@ const mantaTestnet = /*#__PURE__*/ defineChain({
 
 const scaffoldConfig = {
   // The networks on which your DApp is live
-  targetNetworks: [mantaTestnet, chains.manta],
+  targetNetworks: [mantaTestnet, chains.manta, chains.polygonZkEvmTestnet],
 
   // The interval at which your front-end polls the RPC servers for new data
   // it has no effect if you only target the local network (default is 4000)
