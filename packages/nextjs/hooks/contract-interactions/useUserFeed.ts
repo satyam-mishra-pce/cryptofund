@@ -6,7 +6,7 @@ import { useScaffoldReadContract } from "../scaffold-eth";
 // import { useReadContract } from "wagmi";
 // import externalContracts from "~~/contracts/externalContracts";
 
-const useUserData = (address: string | undefined, chainId: number | undefined) => {
+const useUserFeed = () => {
   // if (!address || !chainId) return undefined;
   // if (!(chainId in externalContracts)) return undefined;
   // let abi: Abi;
@@ -26,11 +26,10 @@ const useUserData = (address: string | undefined, chainId: number | undefined) =
 
   const { data } = useScaffoldReadContract({
     contractName: "CRYPTOFUND",
-    functionName: "getUserData",
-    args: [address],
+    functionName: "getProjectFeed",
   });
 
   return data;
 };
 
-export default useUserData;
+export default useUserFeed;

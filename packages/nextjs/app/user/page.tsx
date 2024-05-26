@@ -85,7 +85,7 @@ const page = () => {
                       // value: parseEther("0.1"),
                     });
                   } catch (e) {
-                    console.error("Error setting greeting:", e);
+                    console.error("Error saving the changes:", e);
                   }
                 }}
               >
