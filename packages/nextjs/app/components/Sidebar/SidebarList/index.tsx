@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import SettingsDialog from "../../common/SettingsDialog";
 import SidebarItem from "./SidebarItem";
 
 const SidebarList = () => {
@@ -13,6 +12,7 @@ const SidebarList = () => {
     "/": 1,
     "/myprojects": 2,
     "/myproposals": 3,
+    "/user": 4,
   };
   console.log(router);
   const activeTab = tabIndex[router];
@@ -49,17 +49,12 @@ const SidebarList = () => {
 
       <ul>
         <li>
-          <SidebarItem>Contacts</SidebarItem>
-        </li>
-        <SettingsDialog
-          trigger={
-            <li>
-              <SidebarItem>Settings</SidebarItem>
-            </li>
-          }
-        />
-        <li>
-          <SidebarItem>About</SidebarItem>
+          <Link href="/user">
+            <SidebarItem isActive={router === "/user"}>
+              <i className={`fa-regular fa-user w-4 ${activeTab === 3 ? "fa-solid" : ""}`}></i>
+              Me
+            </SidebarItem>
+          </Link>
         </li>
       </ul>
     </section>
