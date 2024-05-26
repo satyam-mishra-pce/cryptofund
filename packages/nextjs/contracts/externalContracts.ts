@@ -14,7 +14,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const externalContracts = {
   3441006: {
     CRYPTOFUND: {
-      address: "0x60b979De2c961Ac884E6a5D921cDbfA0f454EAA4",
+      address: "0xC0F012f7d60098D14bFC6A84D130c42a0975f40D",
       abi: [
         {
           inputs: [
