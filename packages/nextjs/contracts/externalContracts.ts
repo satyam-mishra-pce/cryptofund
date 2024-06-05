@@ -11,10 +11,11 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
  *   },
  * } as const;
  */
+// "0x50098E7F6Ce069A9396C0d9258BE9840e5243a49"
 const externalContracts = {
   3441006: {
     CRYPTOFUND: {
-      address: "0xa6bc0bc23fBcE3E8612c66234885C510b7a0319a",
+      address: "0x4Eb5eBb00FaD523CD0712779c3C2EDC8b03cc7DA",
       abi: [
         {
           inputs: [
@@ -29,7 +30,7 @@ const externalContracts = {
               type: "uint256",
             },
           ],
-          name: "addressToProjectIdx",
+          name: "addressToCampaignIdx",
           outputs: [
             {
               internalType: "uint256",
@@ -65,6 +66,24 @@ const externalContracts = {
               name: "userAddress",
               type: "address",
             },
+            {
+              internalType: "uint256",
+              name: "timeOfCreation",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "campaignCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
           ],
           stateMutability: "view",
           type: "function",
@@ -73,7 +92,88 @@ const externalContracts = {
           inputs: [
             {
               internalType: "uint256",
-              name: "projectIdx",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          name: "campaignToFunding",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "bio",
+                  type: "string",
+                },
+                {
+                  internalType: "address",
+                  name: "userAddress",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "timeOfCreation",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256[]",
+                  name: "likedCampaignsIdx",
+                  type: "uint256[]",
+                },
+              ],
+              internalType: "struct CryptoFund.User",
+              name: "funder",
+              type: "tuple",
+            },
+            {
+              internalType: "uint256",
+              name: "campaignIdx",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "amountFunded",
+              type: "uint256",
+            },
+            {
+              internalType: "bool",
+              name: "isSuppliedBack",
+              type: "bool",
+            },
+            {
+              internalType: "uint256",
+              name: "amountSupplied",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "bonusSupplied",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "timeOfFunding",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "campaignIdx",
               type: "uint256",
             },
           ],
@@ -106,16 +206,11 @@ const externalContracts = {
             },
             {
               internalType: "uint256",
-              name: "durationInDays",
+              name: "returnTimeInDays",
               type: "uint256",
             },
-            {
-              internalType: "string",
-              name: "timestamp",
-              type: "string",
-            },
           ],
-          name: "createProject",
+          name: "createCampaign",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -124,11 +219,11 @@ const externalContracts = {
           inputs: [
             {
               internalType: "uint256",
-              name: "projectIdx",
+              name: "campaignIdx",
               type: "uint256",
             },
           ],
-          name: "createProposal",
+          name: "createFunding",
           outputs: [],
           stateMutability: "payable",
           type: "function",
@@ -136,12 +231,54 @@ const externalContracts = {
         {
           inputs: [
             {
+              internalType: "string",
+              name: "name",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "bio",
+              type: "string",
+            },
+          ],
+          name: "createUser",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address[]",
+              name: "arr",
+              type: "address[]",
+            },
+            {
+              internalType: "address",
+              name: "addr",
+              type: "address",
+            },
+          ],
+          name: "getAddressIdx",
+          outputs: [
+            {
               internalType: "uint256",
-              name: "projectIdx",
+              name: "",
               type: "uint256",
             },
           ],
-          name: "getProject",
+          stateMutability: "pure",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "campaignIdx",
+              type: "uint256",
+            },
+          ],
+          name: "getCampaign",
           outputs: [
             {
               components: [
@@ -164,6 +301,16 @@ const externalContracts = {
                           name: "userAddress",
                           type: "address",
                         },
+                        {
+                          internalType: "uint256",
+                          name: "timeOfCreation",
+                          type: "uint256",
+                        },
+                        {
+                          internalType: "uint256[]",
+                          name: "likedCampaignsIdx",
+                          type: "uint256[]",
+                        },
                       ],
                       internalType: "struct CryptoFund.User",
                       name: "createdBy",
@@ -174,6 +321,18 @@ const externalContracts = {
                       name: "idx",
                       type: "uint256",
                     },
+                    {
+                      internalType: "uint256",
+                      name: "timeOfCreation",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct CryptoFund.CampaignMetadata",
+                  name: "metadata",
+                  type: "tuple",
+                },
+                {
+                  components: [
                     {
                       internalType: "string",
                       name: "pitch",
@@ -196,38 +355,11 @@ const externalContracts = {
                     },
                     {
                       internalType: "uint256",
-                      name: "durationInDays",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "string",
-                      name: "timestamp",
-                      type: "string",
-                    },
-                  ],
-                  internalType: "struct CryptoFund.ProjectMetadata",
-                  name: "metadata",
-                  type: "tuple",
-                },
-                {
-                  components: [
-                    {
-                      internalType: "uint256",
-                      name: "likeCount",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "proposalCount",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "totalFunded",
+                      name: "returnTimeInDays",
                       type: "uint256",
                     },
                   ],
-                  internalType: "struct CryptoFund.ProjectData",
+                  internalType: "struct CryptoFund.CampaignData",
                   name: "data",
                   type: "tuple",
                 },
@@ -240,12 +372,12 @@ const externalContracts = {
                     },
                     {
                       internalType: "bool",
-                      name: "isProjectCompleted",
+                      name: "isCampaignCompleted",
                       type: "bool",
                     },
                     {
                       internalType: "bool",
-                      name: "isAcceptingProposals",
+                      name: "isAcceptingFundings",
                       type: "bool",
                     },
                     {
@@ -254,17 +386,44 @@ const externalContracts = {
                       type: "uint256",
                     },
                   ],
-                  internalType: "struct CryptoFund.ProjectStatus",
+                  internalType: "struct CryptoFund.CampaignStatus",
                   name: "status",
                   type: "tuple",
                 },
                 {
+                  components: [
+                    {
+                      internalType: "uint256",
+                      name: "likeCount",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "fundingCount",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "amountFunded",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct CryptoFund.CampaignStatistics",
+                  name: "statistics",
+                  type: "tuple",
+                },
+                {
                   internalType: "address[]",
-                  name: "proposers",
+                  name: "funders",
+                  type: "address[]",
+                },
+                {
+                  internalType: "address[]",
+                  name: "likers",
                   type: "address[]",
                 },
               ],
-              internalType: "struct CryptoFund.Project",
+              internalType: "struct CryptoFund.Campaign",
               name: "",
               type: "tuple",
             },
@@ -274,7 +433,7 @@ const externalContracts = {
         },
         {
           inputs: [],
-          name: "getProjectFeed",
+          name: "getCampaignFeed",
           outputs: [
             {
               components: [
@@ -297,6 +456,16 @@ const externalContracts = {
                           name: "userAddress",
                           type: "address",
                         },
+                        {
+                          internalType: "uint256",
+                          name: "timeOfCreation",
+                          type: "uint256",
+                        },
+                        {
+                          internalType: "uint256[]",
+                          name: "likedCampaignsIdx",
+                          type: "uint256[]",
+                        },
                       ],
                       internalType: "struct CryptoFund.User",
                       name: "createdBy",
@@ -307,6 +476,18 @@ const externalContracts = {
                       name: "idx",
                       type: "uint256",
                     },
+                    {
+                      internalType: "uint256",
+                      name: "timeOfCreation",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct CryptoFund.CampaignMetadata",
+                  name: "metadata",
+                  type: "tuple",
+                },
+                {
+                  components: [
                     {
                       internalType: "string",
                       name: "pitch",
@@ -329,38 +510,11 @@ const externalContracts = {
                     },
                     {
                       internalType: "uint256",
-                      name: "durationInDays",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "string",
-                      name: "timestamp",
-                      type: "string",
-                    },
-                  ],
-                  internalType: "struct CryptoFund.ProjectMetadata",
-                  name: "metadata",
-                  type: "tuple",
-                },
-                {
-                  components: [
-                    {
-                      internalType: "uint256",
-                      name: "likeCount",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "proposalCount",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "totalFunded",
+                      name: "returnTimeInDays",
                       type: "uint256",
                     },
                   ],
-                  internalType: "struct CryptoFund.ProjectData",
+                  internalType: "struct CryptoFund.CampaignData",
                   name: "data",
                   type: "tuple",
                 },
@@ -373,12 +527,12 @@ const externalContracts = {
                     },
                     {
                       internalType: "bool",
-                      name: "isProjectCompleted",
+                      name: "isCampaignCompleted",
                       type: "bool",
                     },
                     {
                       internalType: "bool",
-                      name: "isAcceptingProposals",
+                      name: "isAcceptingFundings",
                       type: "bool",
                     },
                     {
@@ -387,19 +541,89 @@ const externalContracts = {
                       type: "uint256",
                     },
                   ],
-                  internalType: "struct CryptoFund.ProjectStatus",
+                  internalType: "struct CryptoFund.CampaignStatus",
                   name: "status",
                   type: "tuple",
                 },
                 {
+                  components: [
+                    {
+                      internalType: "uint256",
+                      name: "likeCount",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "fundingCount",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "amountFunded",
+                      type: "uint256",
+                    },
+                  ],
+                  internalType: "struct CryptoFund.CampaignStatistics",
+                  name: "statistics",
+                  type: "tuple",
+                },
+                {
                   internalType: "address[]",
-                  name: "proposers",
+                  name: "funders",
+                  type: "address[]",
+                },
+                {
+                  internalType: "address[]",
+                  name: "likers",
                   type: "address[]",
                 },
               ],
-              internalType: "struct CryptoFund.Project[]",
+              internalType: "struct CryptoFund.Campaign[]",
               name: "",
               type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256[]",
+              name: "arr",
+              type: "uint256[]",
+            },
+            {
+              internalType: "uint256",
+              name: "item",
+              type: "uint256",
+            },
+          ],
+          name: "getUintIdx",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "pure",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "userAddress",
+              type: "address",
+            },
+          ],
+          name: "getUserCampaigns",
+          outputs: [
+            {
+              internalType: "uint256[]",
+              name: "",
+              type: "uint256[]",
             },
           ],
           stateMutability: "view",
@@ -432,6 +656,16 @@ const externalContracts = {
                   name: "userAddress",
                   type: "address",
                 },
+                {
+                  internalType: "uint256",
+                  name: "timeOfCreation",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256[]",
+                  name: "likedCampaignsIdx",
+                  type: "uint256[]",
+                },
               ],
               internalType: "struct CryptoFund.User",
               name: "",
@@ -449,26 +683,7 @@ const externalContracts = {
               type: "address",
             },
           ],
-          name: "getUserProjects",
-          outputs: [
-            {
-              internalType: "uint256[]",
-              name: "",
-              type: "uint256[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "userAddress",
-              type: "address",
-            },
-          ],
-          name: "getUserProposals",
+          name: "getUserFundings",
           outputs: [
             {
               components: [
@@ -489,19 +704,29 @@ const externalContracts = {
                       name: "userAddress",
                       type: "address",
                     },
+                    {
+                      internalType: "uint256",
+                      name: "timeOfCreation",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256[]",
+                      name: "likedCampaignsIdx",
+                      type: "uint256[]",
+                    },
                   ],
                   internalType: "struct CryptoFund.User",
-                  name: "proposer",
+                  name: "funder",
                   type: "tuple",
                 },
                 {
                   internalType: "uint256",
-                  name: "projectIdx",
+                  name: "campaignIdx",
                   type: "uint256",
                 },
                 {
                   internalType: "uint256",
-                  name: "amountProposed",
+                  name: "amountFunded",
                   type: "uint256",
                 },
                 {
@@ -519,8 +744,13 @@ const externalContracts = {
                   name: "bonusSupplied",
                   type: "uint256",
                 },
+                {
+                  internalType: "uint256",
+                  name: "timeOfFunding",
+                  type: "uint256",
+                },
               ],
-              internalType: "struct CryptoFund.Proposal[]",
+              internalType: "struct CryptoFund.Funding[]",
               name: "",
               type: "tuple[]",
             },
@@ -529,95 +759,42 @@ const externalContracts = {
           type: "function",
         },
         {
-          inputs: [],
-          name: "projectCount",
-          outputs: [
+          inputs: [
             {
               internalType: "uint256",
-              name: "",
+              name: "campaignIdx",
               type: "uint256",
             },
           ],
-          stateMutability: "view",
+          name: "likeCampaign",
+          outputs: [],
+          stateMutability: "nonpayable",
           type: "function",
         },
         {
           inputs: [
             {
               internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "projectToProposal",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "bio",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "userAddress",
-                  type: "address",
-                },
-              ],
-              internalType: "struct CryptoFund.User",
-              name: "proposer",
-              type: "tuple",
-            },
-            {
-              internalType: "uint256",
-              name: "projectIdx",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "amountProposed",
-              type: "uint256",
-            },
-            {
-              internalType: "bool",
-              name: "isSuppliedBack",
-              type: "bool",
-            },
-            {
-              internalType: "uint256",
-              name: "amountSupplied",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "bonusSupplied",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "projectIdx",
+              name: "campaignIdx",
               type: "uint256",
             },
           ],
           name: "supplyFundsBack",
           outputs: [],
           stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "campaignIdx",
+              type: "uint256",
+            },
+          ],
+          name: "unlikeCampaign",
+          outputs: [],
+          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -651,7 +828,7 @@ const externalContracts = {
               type: "uint256",
             },
           ],
-          name: "userToProposals",
+          name: "userToFundings",
           outputs: [
             {
               components: [
@@ -670,19 +847,29 @@ const externalContracts = {
                   name: "userAddress",
                   type: "address",
                 },
+                {
+                  internalType: "uint256",
+                  name: "timeOfCreation",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256[]",
+                  name: "likedCampaignsIdx",
+                  type: "uint256[]",
+                },
               ],
               internalType: "struct CryptoFund.User",
-              name: "proposer",
+              name: "funder",
               type: "tuple",
             },
             {
               internalType: "uint256",
-              name: "projectIdx",
+              name: "campaignIdx",
               type: "uint256",
             },
             {
               internalType: "uint256",
-              name: "amountProposed",
+              name: "amountFunded",
               type: "uint256",
             },
             {
@@ -698,6 +885,11 @@ const externalContracts = {
             {
               internalType: "uint256",
               name: "bonusSupplied",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "timeOfFunding",
               type: "uint256",
             },
           ],
@@ -707,701 +899,701 @@ const externalContracts = {
       ],
     },
   },
-  2442: {
-    CRYPTOFUND: {
-      address: "0xa6bc0bc23fBcE3E8612c66234885C510b7a0319a",
-      abi: [
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "addressToProjectIdx",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "addressToUser",
-          outputs: [
-            {
-              internalType: "string",
-              name: "name",
-              type: "string",
-            },
-            {
-              internalType: "string",
-              name: "bio",
-              type: "string",
-            },
-            {
-              internalType: "address",
-              name: "userAddress",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "projectIdx",
-              type: "uint256",
-            },
-          ],
-          name: "claimFunds",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "pitch",
-              type: "string",
-            },
-            {
-              internalType: "uint256",
-              name: "askAmount",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "interestRate",
-              type: "uint256",
-            },
-            {
-              internalType: "string[]",
-              name: "assetLinks",
-              type: "string[]",
-            },
-            {
-              internalType: "uint256",
-              name: "durationInDays",
-              type: "uint256",
-            },
-            {
-              internalType: "string",
-              name: "timestamp",
-              type: "string",
-            },
-          ],
-          name: "createProject",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "projectIdx",
-              type: "uint256",
-            },
-          ],
-          name: "createProposal",
-          outputs: [],
-          stateMutability: "payable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "projectIdx",
-              type: "uint256",
-            },
-          ],
-          name: "getProject",
-          outputs: [
-            {
-              components: [
-                {
-                  components: [
-                    {
-                      components: [
-                        {
-                          internalType: "string",
-                          name: "name",
-                          type: "string",
-                        },
-                        {
-                          internalType: "string",
-                          name: "bio",
-                          type: "string",
-                        },
-                        {
-                          internalType: "address",
-                          name: "userAddress",
-                          type: "address",
-                        },
-                      ],
-                      internalType: "struct CryptoFund.User",
-                      name: "createdBy",
-                      type: "tuple",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "idx",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "string",
-                      name: "pitch",
-                      type: "string",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "askAmount",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "interestRate",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "string[]",
-                      name: "assetLinks",
-                      type: "string[]",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "durationInDays",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "string",
-                      name: "timestamp",
-                      type: "string",
-                    },
-                  ],
-                  internalType: "struct CryptoFund.ProjectMetadata",
-                  name: "metadata",
-                  type: "tuple",
-                },
-                {
-                  components: [
-                    {
-                      internalType: "uint256",
-                      name: "likeCount",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "proposalCount",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "totalFunded",
-                      type: "uint256",
-                    },
-                  ],
-                  internalType: "struct CryptoFund.ProjectData",
-                  name: "data",
-                  type: "tuple",
-                },
-                {
-                  components: [
-                    {
-                      internalType: "bool",
-                      name: "isAskFulfilled",
-                      type: "bool",
-                    },
-                    {
-                      internalType: "bool",
-                      name: "isProjectCompleted",
-                      type: "bool",
-                    },
-                    {
-                      internalType: "bool",
-                      name: "isAcceptingProposals",
-                      type: "bool",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "suppliedBackAmount",
-                      type: "uint256",
-                    },
-                  ],
-                  internalType: "struct CryptoFund.ProjectStatus",
-                  name: "status",
-                  type: "tuple",
-                },
-                {
-                  internalType: "address[]",
-                  name: "proposers",
-                  type: "address[]",
-                },
-              ],
-              internalType: "struct CryptoFund.Project",
-              name: "",
-              type: "tuple",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getProjectFeed",
-          outputs: [
-            {
-              components: [
-                {
-                  components: [
-                    {
-                      components: [
-                        {
-                          internalType: "string",
-                          name: "name",
-                          type: "string",
-                        },
-                        {
-                          internalType: "string",
-                          name: "bio",
-                          type: "string",
-                        },
-                        {
-                          internalType: "address",
-                          name: "userAddress",
-                          type: "address",
-                        },
-                      ],
-                      internalType: "struct CryptoFund.User",
-                      name: "createdBy",
-                      type: "tuple",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "idx",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "string",
-                      name: "pitch",
-                      type: "string",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "askAmount",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "interestRate",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "string[]",
-                      name: "assetLinks",
-                      type: "string[]",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "durationInDays",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "string",
-                      name: "timestamp",
-                      type: "string",
-                    },
-                  ],
-                  internalType: "struct CryptoFund.ProjectMetadata",
-                  name: "metadata",
-                  type: "tuple",
-                },
-                {
-                  components: [
-                    {
-                      internalType: "uint256",
-                      name: "likeCount",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "proposalCount",
-                      type: "uint256",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "totalFunded",
-                      type: "uint256",
-                    },
-                  ],
-                  internalType: "struct CryptoFund.ProjectData",
-                  name: "data",
-                  type: "tuple",
-                },
-                {
-                  components: [
-                    {
-                      internalType: "bool",
-                      name: "isAskFulfilled",
-                      type: "bool",
-                    },
-                    {
-                      internalType: "bool",
-                      name: "isProjectCompleted",
-                      type: "bool",
-                    },
-                    {
-                      internalType: "bool",
-                      name: "isAcceptingProposals",
-                      type: "bool",
-                    },
-                    {
-                      internalType: "uint256",
-                      name: "suppliedBackAmount",
-                      type: "uint256",
-                    },
-                  ],
-                  internalType: "struct CryptoFund.ProjectStatus",
-                  name: "status",
-                  type: "tuple",
-                },
-                {
-                  internalType: "address[]",
-                  name: "proposers",
-                  type: "address[]",
-                },
-              ],
-              internalType: "struct CryptoFund.Project[]",
-              name: "",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "userAddress",
-              type: "address",
-            },
-          ],
-          name: "getUserData",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "bio",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "userAddress",
-                  type: "address",
-                },
-              ],
-              internalType: "struct CryptoFund.User",
-              name: "",
-              type: "tuple",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "userAddress",
-              type: "address",
-            },
-          ],
-          name: "getUserProjects",
-          outputs: [
-            {
-              internalType: "uint256[]",
-              name: "",
-              type: "uint256[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "userAddress",
-              type: "address",
-            },
-          ],
-          name: "getUserProposals",
-          outputs: [
-            {
-              components: [
-                {
-                  components: [
-                    {
-                      internalType: "string",
-                      name: "name",
-                      type: "string",
-                    },
-                    {
-                      internalType: "string",
-                      name: "bio",
-                      type: "string",
-                    },
-                    {
-                      internalType: "address",
-                      name: "userAddress",
-                      type: "address",
-                    },
-                  ],
-                  internalType: "struct CryptoFund.User",
-                  name: "proposer",
-                  type: "tuple",
-                },
-                {
-                  internalType: "uint256",
-                  name: "projectIdx",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "amountProposed",
-                  type: "uint256",
-                },
-                {
-                  internalType: "bool",
-                  name: "isSuppliedBack",
-                  type: "bool",
-                },
-                {
-                  internalType: "uint256",
-                  name: "amountSupplied",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "bonusSupplied",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct CryptoFund.Proposal[]",
-              name: "",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "projectCount",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "projectToProposal",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "bio",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "userAddress",
-                  type: "address",
-                },
-              ],
-              internalType: "struct CryptoFund.User",
-              name: "proposer",
-              type: "tuple",
-            },
-            {
-              internalType: "uint256",
-              name: "projectIdx",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "amountProposed",
-              type: "uint256",
-            },
-            {
-              internalType: "bool",
-              name: "isSuppliedBack",
-              type: "bool",
-            },
-            {
-              internalType: "uint256",
-              name: "amountSupplied",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "bonusSupplied",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "projectIdx",
-              type: "uint256",
-            },
-          ],
-          name: "supplyFundsBack",
-          outputs: [],
-          stateMutability: "payable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "name",
-              type: "string",
-            },
-            {
-              internalType: "string",
-              name: "bio",
-              type: "string",
-            },
-          ],
-          name: "updateUser",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "userToProposals",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "bio",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "userAddress",
-                  type: "address",
-                },
-              ],
-              internalType: "struct CryptoFund.User",
-              name: "proposer",
-              type: "tuple",
-            },
-            {
-              internalType: "uint256",
-              name: "projectIdx",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "amountProposed",
-              type: "uint256",
-            },
-            {
-              internalType: "bool",
-              name: "isSuppliedBack",
-              type: "bool",
-            },
-            {
-              internalType: "uint256",
-              name: "amountSupplied",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "bonusSupplied",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-    },
-  },
+  // 2442: {
+  //   CRYPTOFUND: {
+  //     address: "0xa6bc0bc23fBcE3E8612c66234885C510b7a0319a",
+  //     abi: [
+  //       {
+  //         inputs: [
+  //           {
+  //             internalType: "address",
+  //             name: "",
+  //             type: "address",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "",
+  //             type: "uint256",
+  //           },
+  //         ],
+  //         name: "addressToProjectIdx",
+  //         outputs: [
+  //           {
+  //             internalType: "uint256",
+  //             name: "",
+  //             type: "uint256",
+  //           },
+  //         ],
+  //         stateMutability: "view",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [
+  //           {
+  //             internalType: "address",
+  //             name: "",
+  //             type: "address",
+  //           },
+  //         ],
+  //         name: "addressToUser",
+  //         outputs: [
+  //           {
+  //             internalType: "string",
+  //             name: "name",
+  //             type: "string",
+  //           },
+  //           {
+  //             internalType: "string",
+  //             name: "bio",
+  //             type: "string",
+  //           },
+  //           {
+  //             internalType: "address",
+  //             name: "userAddress",
+  //             type: "address",
+  //           },
+  //         ],
+  //         stateMutability: "view",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [
+  //           {
+  //             internalType: "uint256",
+  //             name: "projectIdx",
+  //             type: "uint256",
+  //           },
+  //         ],
+  //         name: "claimFunds",
+  //         outputs: [],
+  //         stateMutability: "nonpayable",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [
+  //           {
+  //             internalType: "string",
+  //             name: "pitch",
+  //             type: "string",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "askAmount",
+  //             type: "uint256",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "interestRate",
+  //             type: "uint256",
+  //           },
+  //           {
+  //             internalType: "string[]",
+  //             name: "assetLinks",
+  //             type: "string[]",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "durationInDays",
+  //             type: "uint256",
+  //           },
+  //           {
+  //             internalType: "string",
+  //             name: "timestamp",
+  //             type: "string",
+  //           },
+  //         ],
+  //         name: "createProject",
+  //         outputs: [],
+  //         stateMutability: "nonpayable",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [
+  //           {
+  //             internalType: "uint256",
+  //             name: "projectIdx",
+  //             type: "uint256",
+  //           },
+  //         ],
+  //         name: "createProposal",
+  //         outputs: [],
+  //         stateMutability: "payable",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [
+  //           {
+  //             internalType: "uint256",
+  //             name: "projectIdx",
+  //             type: "uint256",
+  //           },
+  //         ],
+  //         name: "getProject",
+  //         outputs: [
+  //           {
+  //             components: [
+  //               {
+  //                 components: [
+  //                   {
+  //                     components: [
+  //                       {
+  //                         internalType: "string",
+  //                         name: "name",
+  //                         type: "string",
+  //                       },
+  //                       {
+  //                         internalType: "string",
+  //                         name: "bio",
+  //                         type: "string",
+  //                       },
+  //                       {
+  //                         internalType: "address",
+  //                         name: "userAddress",
+  //                         type: "address",
+  //                       },
+  //                     ],
+  //                     internalType: "struct CryptoFund.User",
+  //                     name: "createdBy",
+  //                     type: "tuple",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "idx",
+  //                     type: "uint256",
+  //                   },
+  //                   {
+  //                     internalType: "string",
+  //                     name: "pitch",
+  //                     type: "string",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "askAmount",
+  //                     type: "uint256",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "interestRate",
+  //                     type: "uint256",
+  //                   },
+  //                   {
+  //                     internalType: "string[]",
+  //                     name: "assetLinks",
+  //                     type: "string[]",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "durationInDays",
+  //                     type: "uint256",
+  //                   },
+  //                   {
+  //                     internalType: "string",
+  //                     name: "timestamp",
+  //                     type: "string",
+  //                   },
+  //                 ],
+  //                 internalType: "struct CryptoFund.ProjectMetadata",
+  //                 name: "metadata",
+  //                 type: "tuple",
+  //               },
+  //               {
+  //                 components: [
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "likeCount",
+  //                     type: "uint256",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "proposalCount",
+  //                     type: "uint256",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "totalFunded",
+  //                     type: "uint256",
+  //                   },
+  //                 ],
+  //                 internalType: "struct CryptoFund.ProjectData",
+  //                 name: "data",
+  //                 type: "tuple",
+  //               },
+  //               {
+  //                 components: [
+  //                   {
+  //                     internalType: "bool",
+  //                     name: "isAskFulfilled",
+  //                     type: "bool",
+  //                   },
+  //                   {
+  //                     internalType: "bool",
+  //                     name: "isProjectCompleted",
+  //                     type: "bool",
+  //                   },
+  //                   {
+  //                     internalType: "bool",
+  //                     name: "isAcceptingProposals",
+  //                     type: "bool",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "suppliedBackAmount",
+  //                     type: "uint256",
+  //                   },
+  //                 ],
+  //                 internalType: "struct CryptoFund.ProjectStatus",
+  //                 name: "status",
+  //                 type: "tuple",
+  //               },
+  //               {
+  //                 internalType: "address[]",
+  //                 name: "proposers",
+  //                 type: "address[]",
+  //               },
+  //             ],
+  //             internalType: "struct CryptoFund.Project",
+  //             name: "",
+  //             type: "tuple",
+  //           },
+  //         ],
+  //         stateMutability: "view",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [],
+  //         name: "getProjectFeed",
+  //         outputs: [
+  //           {
+  //             components: [
+  //               {
+  //                 components: [
+  //                   {
+  //                     components: [
+  //                       {
+  //                         internalType: "string",
+  //                         name: "name",
+  //                         type: "string",
+  //                       },
+  //                       {
+  //                         internalType: "string",
+  //                         name: "bio",
+  //                         type: "string",
+  //                       },
+  //                       {
+  //                         internalType: "address",
+  //                         name: "userAddress",
+  //                         type: "address",
+  //                       },
+  //                     ],
+  //                     internalType: "struct CryptoFund.User",
+  //                     name: "createdBy",
+  //                     type: "tuple",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "idx",
+  //                     type: "uint256",
+  //                   },
+  //                   {
+  //                     internalType: "string",
+  //                     name: "pitch",
+  //                     type: "string",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "askAmount",
+  //                     type: "uint256",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "interestRate",
+  //                     type: "uint256",
+  //                   },
+  //                   {
+  //                     internalType: "string[]",
+  //                     name: "assetLinks",
+  //                     type: "string[]",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "durationInDays",
+  //                     type: "uint256",
+  //                   },
+  //                   {
+  //                     internalType: "string",
+  //                     name: "timestamp",
+  //                     type: "string",
+  //                   },
+  //                 ],
+  //                 internalType: "struct CryptoFund.ProjectMetadata",
+  //                 name: "metadata",
+  //                 type: "tuple",
+  //               },
+  //               {
+  //                 components: [
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "likeCount",
+  //                     type: "uint256",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "proposalCount",
+  //                     type: "uint256",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "totalFunded",
+  //                     type: "uint256",
+  //                   },
+  //                 ],
+  //                 internalType: "struct CryptoFund.ProjectData",
+  //                 name: "data",
+  //                 type: "tuple",
+  //               },
+  //               {
+  //                 components: [
+  //                   {
+  //                     internalType: "bool",
+  //                     name: "isAskFulfilled",
+  //                     type: "bool",
+  //                   },
+  //                   {
+  //                     internalType: "bool",
+  //                     name: "isProjectCompleted",
+  //                     type: "bool",
+  //                   },
+  //                   {
+  //                     internalType: "bool",
+  //                     name: "isAcceptingProposals",
+  //                     type: "bool",
+  //                   },
+  //                   {
+  //                     internalType: "uint256",
+  //                     name: "suppliedBackAmount",
+  //                     type: "uint256",
+  //                   },
+  //                 ],
+  //                 internalType: "struct CryptoFund.ProjectStatus",
+  //                 name: "status",
+  //                 type: "tuple",
+  //               },
+  //               {
+  //                 internalType: "address[]",
+  //                 name: "proposers",
+  //                 type: "address[]",
+  //               },
+  //             ],
+  //             internalType: "struct CryptoFund.Project[]",
+  //             name: "",
+  //             type: "tuple[]",
+  //           },
+  //         ],
+  //         stateMutability: "view",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [
+  //           {
+  //             internalType: "address",
+  //             name: "userAddress",
+  //             type: "address",
+  //           },
+  //         ],
+  //         name: "getUserData",
+  //         outputs: [
+  //           {
+  //             components: [
+  //               {
+  //                 internalType: "string",
+  //                 name: "name",
+  //                 type: "string",
+  //               },
+  //               {
+  //                 internalType: "string",
+  //                 name: "bio",
+  //                 type: "string",
+  //               },
+  //               {
+  //                 internalType: "address",
+  //                 name: "userAddress",
+  //                 type: "address",
+  //               },
+  //             ],
+  //             internalType: "struct CryptoFund.User",
+  //             name: "",
+  //             type: "tuple",
+  //           },
+  //         ],
+  //         stateMutability: "view",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [
+  //           {
+  //             internalType: "address",
+  //             name: "userAddress",
+  //             type: "address",
+  //           },
+  //         ],
+  //         name: "getUserProjects",
+  //         outputs: [
+  //           {
+  //             internalType: "uint256[]",
+  //             name: "",
+  //             type: "uint256[]",
+  //           },
+  //         ],
+  //         stateMutability: "view",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [
+  //           {
+  //             internalType: "address",
+  //             name: "userAddress",
+  //             type: "address",
+  //           },
+  //         ],
+  //         name: "getUserProposals",
+  //         outputs: [
+  //           {
+  //             components: [
+  //               {
+  //                 components: [
+  //                   {
+  //                     internalType: "string",
+  //                     name: "name",
+  //                     type: "string",
+  //                   },
+  //                   {
+  //                     internalType: "string",
+  //                     name: "bio",
+  //                     type: "string",
+  //                   },
+  //                   {
+  //                     internalType: "address",
+  //                     name: "userAddress",
+  //                     type: "address",
+  //                   },
+  //                 ],
+  //                 internalType: "struct CryptoFund.User",
+  //                 name: "proposer",
+  //                 type: "tuple",
+  //               },
+  //               {
+  //                 internalType: "uint256",
+  //                 name: "projectIdx",
+  //                 type: "uint256",
+  //               },
+  //               {
+  //                 internalType: "uint256",
+  //                 name: "amountProposed",
+  //                 type: "uint256",
+  //               },
+  //               {
+  //                 internalType: "bool",
+  //                 name: "isSuppliedBack",
+  //                 type: "bool",
+  //               },
+  //               {
+  //                 internalType: "uint256",
+  //                 name: "amountSupplied",
+  //                 type: "uint256",
+  //               },
+  //               {
+  //                 internalType: "uint256",
+  //                 name: "bonusSupplied",
+  //                 type: "uint256",
+  //               },
+  //             ],
+  //             internalType: "struct CryptoFund.Proposal[]",
+  //             name: "",
+  //             type: "tuple[]",
+  //           },
+  //         ],
+  //         stateMutability: "view",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [],
+  //         name: "projectCount",
+  //         outputs: [
+  //           {
+  //             internalType: "uint256",
+  //             name: "",
+  //             type: "uint256",
+  //           },
+  //         ],
+  //         stateMutability: "view",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [
+  //           {
+  //             internalType: "uint256",
+  //             name: "",
+  //             type: "uint256",
+  //           },
+  //           {
+  //             internalType: "address",
+  //             name: "",
+  //             type: "address",
+  //           },
+  //         ],
+  //         name: "projectToProposal",
+  //         outputs: [
+  //           {
+  //             components: [
+  //               {
+  //                 internalType: "string",
+  //                 name: "name",
+  //                 type: "string",
+  //               },
+  //               {
+  //                 internalType: "string",
+  //                 name: "bio",
+  //                 type: "string",
+  //               },
+  //               {
+  //                 internalType: "address",
+  //                 name: "userAddress",
+  //                 type: "address",
+  //               },
+  //             ],
+  //             internalType: "struct CryptoFund.User",
+  //             name: "proposer",
+  //             type: "tuple",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "projectIdx",
+  //             type: "uint256",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "amountProposed",
+  //             type: "uint256",
+  //           },
+  //           {
+  //             internalType: "bool",
+  //             name: "isSuppliedBack",
+  //             type: "bool",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "amountSupplied",
+  //             type: "uint256",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "bonusSupplied",
+  //             type: "uint256",
+  //           },
+  //         ],
+  //         stateMutability: "view",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [
+  //           {
+  //             internalType: "uint256",
+  //             name: "projectIdx",
+  //             type: "uint256",
+  //           },
+  //         ],
+  //         name: "supplyFundsBack",
+  //         outputs: [],
+  //         stateMutability: "payable",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [
+  //           {
+  //             internalType: "string",
+  //             name: "name",
+  //             type: "string",
+  //           },
+  //           {
+  //             internalType: "string",
+  //             name: "bio",
+  //             type: "string",
+  //           },
+  //         ],
+  //         name: "updateUser",
+  //         outputs: [],
+  //         stateMutability: "nonpayable",
+  //         type: "function",
+  //       },
+  //       {
+  //         inputs: [
+  //           {
+  //             internalType: "address",
+  //             name: "",
+  //             type: "address",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "",
+  //             type: "uint256",
+  //           },
+  //         ],
+  //         name: "userToProposals",
+  //         outputs: [
+  //           {
+  //             components: [
+  //               {
+  //                 internalType: "string",
+  //                 name: "name",
+  //                 type: "string",
+  //               },
+  //               {
+  //                 internalType: "string",
+  //                 name: "bio",
+  //                 type: "string",
+  //               },
+  //               {
+  //                 internalType: "address",
+  //                 name: "userAddress",
+  //                 type: "address",
+  //               },
+  //             ],
+  //             internalType: "struct CryptoFund.User",
+  //             name: "proposer",
+  //             type: "tuple",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "projectIdx",
+  //             type: "uint256",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "amountProposed",
+  //             type: "uint256",
+  //           },
+  //           {
+  //             internalType: "bool",
+  //             name: "isSuppliedBack",
+  //             type: "bool",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "amountSupplied",
+  //             type: "uint256",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "bonusSupplied",
+  //             type: "uint256",
+  //           },
+  //         ],
+  //         stateMutability: "view",
+  //         type: "function",
+  //       },
+  //     ],
+  //   },
+  // },
 } as const;
 
 export default externalContracts satisfies GenericContractsDeclaration;

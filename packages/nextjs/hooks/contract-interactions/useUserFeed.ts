@@ -26,7 +26,7 @@ const useUserFeed = () => {
 
   const { data } = useScaffoldReadContract({
     contractName: "CRYPTOFUND",
-    functionName: "getProjectFeed",
+    functionName: "getCampaignFeed",
   });
 
   return data;

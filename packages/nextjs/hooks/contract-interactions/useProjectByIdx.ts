@@ -25,7 +25,7 @@ const useProject = (idx: number) => {
 
   const { data } = useScaffoldReadContract({
     contractName: "CRYPTOFUND",
-    functionName: "getProject",
+    functionName: "getCampaign",
     args: [BigInt(idx)],
   });
 

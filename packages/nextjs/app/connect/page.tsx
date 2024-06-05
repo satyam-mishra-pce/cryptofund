@@ -8,7 +8,7 @@ import { Button } from "~~/components/ui/button";
 const Page = () => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center flex-1">
-      <div className="bg-background-layer-10 border border-border rounded-xl shadow-sm flex flex-col items-center justify-center overflow-hidden">
+      <div className="bg-background border border-border rounded-xl shadow-sm flex flex-col items-center justify-center overflow-hidden">
         <div
           style={{
             background: `url("/assets/Halo1.png")`,

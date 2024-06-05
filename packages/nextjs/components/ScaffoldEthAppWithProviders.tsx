@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import localFont from "next/font/local";
+import { Toaster } from "./ui/toaster";
 import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
@@ -141,6 +142,7 @@ export const Web3Providers = ({ children }: { children: React.ReactNode }) => {
             </RainbowKitProvider>
           </QueryClientProvider>
         </WagmiProvider>
+        <Toaster />
       </body>
     </html>
   );

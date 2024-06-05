@@ -7,7 +7,6 @@ import { useScaffoldReadContract } from "../scaffold-eth";
 // import externalContracts from "~~/contracts/externalContracts";
 
 const useUserProjects = (address: string | undefined) => {
-  if (!address) return undefined;
   // if (!(chainId in externalContracts)) return undefined;
   // let abi: Abi;
   // try {
@@ -26,10 +25,11 @@ const useUserProjects = (address: string | undefined) => {
 
   const { data } = useScaffoldReadContract({
     contractName: "CRYPTOFUND",
-    functionName: "getUserProjects",
+    functionName: "getUserCampaigns",
     args: [address],
   });
 
+  if (!address) return undefined;
   return data;
 };
 

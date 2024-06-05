@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import AboutDialog from "../../common/AboutDialog";
 import SidebarItem from "./SidebarItem";
 
 const SidebarList = () => {
@@ -18,43 +19,32 @@ const SidebarList = () => {
   const activeTab = tabIndex[router];
   console.log("ActiveTab:", activeTab);
   return (
-    <section className="px-2 flex flex-1 flex-col justify-between py-2">
-      <ul className="flex-1">
+    <section className="px-4 flex flex-1 flex-col justify-between py-2 mt-4">
+      <ul className="flex-1 flex flex-col gap-1">
         <li>
-          <Link href="/home">
-            <SidebarItem isActive={router === "/home" || router === "/"}>
-              <i className={`fa-regular fa-house w-4 ${activeTab === 1 ? "fa-solid" : ""} `}></i>
-              Home
-            </SidebarItem>
+          <Link href="/">
+            <SidebarItem isActive={router === "/"} icon="fa-home" text="Home" />
           </Link>
         </li>
         <li>
-          <Link href="/myprojects">
-            <SidebarItem isActive={router === "/myprojects"}>
-              <i className={`fa-regular fa-folder w-4 ${activeTab === 2 ? "fa-solid" : ""}`}></i>
-              My Projects
-            </SidebarItem>
+          <Link href="/campaigns">
+            <SidebarItem isActive={router === "/campaigns"} icon="fa-rocket" text="My Campaigns" />
           </Link>
         </li>
         <li>
-          <Link href="/myproposals">
-            <SidebarItem isActive={router === "/myproposals"}>
-              <i className={`fa-regular fa-dollar-sign w-4 ${activeTab === 3 ? "fa-solid" : ""}`}></i>
-              My Proposals
-            </SidebarItem>
+          <Link href="/fundings">
+            <SidebarItem isActive={router === "/fundings"} icon="fa-circle-dollar" text="My Fundings" />
           </Link>
         </li>
+        {/* <li>
+          <Link href="/settings">
+          <SidebarItem isActive={router === "/settings"} icon="fa-gear" text="Settings" />
+          </Link>
+        </li> */}
       </ul>
-      <hr className="my-2" />
-
-      <ul>
+      <ul className="flex flex-col">
         <li>
-          <Link href="/user">
-            <SidebarItem isActive={router === "/user"}>
-              <i className={`fa-regular fa-user w-4 ${activeTab === 3 ? "fa-solid" : ""}`}></i>
-              Me
-            </SidebarItem>
-          </Link>
+          <AboutDialog trigger={<SidebarItem icon="fa-circle-info" text="About" />} />
         </li>
       </ul>
     </section>

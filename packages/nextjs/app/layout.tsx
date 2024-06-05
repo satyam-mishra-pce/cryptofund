@@ -1,4 +1,3 @@
-import Header from "./components/Header";
 import Sidebar from "./components/Sidebar/index";
 import "@rainbow-me/rainbowkit/styles.css";
 import { Metadata } from "next";
@@ -10,9 +9,9 @@ const baseUrl = process.env.VERCEL_URL
   : `http://localhost:${process.env.PORT || 3000}`;
 const imageUrl = `${baseUrl}/thumbnail.jpg`;
 
-const title = "Scaffold-ETH 2 App";
-const titleTemplate = "%s | Scaffold-ETH 2";
-const description = "Built with 🏗 Scaffold-ETH 2";
+const title = "Home";
+const titleTemplate = "%s | CryptoFund";
+const description = "Empower your campaigns with secure, transparent blockchain listing.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -50,10 +49,10 @@ export const metadata: Metadata = {
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   return (
     <ScaffoldEthAppWithProviders>
-      <div className="flex flex-1 w-full flex-row">
+      <div className="flex flex-1 w-full flex-row max-w-[1200px] items-start gap-2 p-4">
         <Sidebar />
         <main className="flex flex-col flex-1 gap-10">
-          <Header />
+          {/* <Header /> */}
           {children}
         </main>
       </div>

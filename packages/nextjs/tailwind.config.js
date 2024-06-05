@@ -15,18 +15,19 @@ module.exports = {
       colors: {
         "dialog-border": "rgb(var(--dialog-border))",
         border: "rgb(var(--border))",
+        borderLight: "rgb(var(--border-light))",
         input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
+        ring: "rgb(var(--ring))",
+        "background-2": "rgb(var(--background-2))",
         background: "rgb(var(--background))",
-        "background-layer-10": "rgb(var(--background-layer-10))",
         foreground: "rgb(var(--foreground))",
         primary: {
           DEFAULT: "rgb(var(--primary))",
           foreground: "rgb(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "rgb(var(--secondary))",
+          foreground: "rgb(var(--secondary-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -37,12 +38,12 @@ module.exports = {
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "rgb(var(--accent))",
+          foreground: "rgb(var(--accent-foreground))",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "rgb(var(--popover))",
+          foreground: "rgb(var(--popover-foreground))",
         },
         card: {
           DEFAULT: "hsl(var(--card))",

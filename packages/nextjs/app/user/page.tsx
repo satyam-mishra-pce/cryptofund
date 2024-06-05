@@ -7,7 +7,7 @@ import useUserData from "~~/hooks/contract-interactions/useUserData";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { getTargetNetworks } from "~~/utils/scaffold-eth";
 
-const page = () => {
+const Page = () => {
   const { address, chainId } = useAccount();
   const allowedNetworks = getTargetNetworks();
   const isNetworkAllowed = (chainId: number | undefined) => {
@@ -18,7 +18,7 @@ const page = () => {
     return false;
   };
 
-  const userData: any = useUserData(address, chainId);
+  const userData: any = useUserData(address);
   const nickname = userData?.name ? (userData.name === "" ? "New User" : userData.name) : "New User";
   const [nicknameVal, setNicknameVal] = useState(nickname);
   useEffect(() => {
@@ -107,4 +107,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

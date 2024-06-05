@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.0;
 
 import "./ConversionRates.sol";
 
@@ -10,56 +10,64 @@ contract CryptoFund {
 		string name;
 		string bio;
 		address userAddress;
+		uint256 timeOfCreation;
+		uint[] likedCampaignsIdx;
 	}
 
-	struct Proposal {
-		User proposer;
-		uint projectIdx;
-		uint amountProposed;
+	struct Funding {
+		User funder;
+		uint campaignIdx;
+		uint amountFunded;
 		bool isSuppliedBack;
 		uint amountSupplied;
 		uint bonusSupplied;
+		uint timeOfFunding;
 	}
 
-	struct ProjectMetadata {
+	struct CampaignMetadata {
 		User createdBy;
 		uint idx;
+		uint timeOfCreation;
+	}
+
+	struct CampaignData {
 		string pitch;
 		uint askAmount;
 		uint interestRate;
 		string[] assetLinks;
-		uint durationInDays;
-		string timestamp;
+		uint returnTimeInDays;
 	}
 
-	struct ProjectData {
+	struct CampaignStatistics {
 		uint likeCount;
-		uint proposalCount;
-		uint totalFunded;
+		uint fundingCount;
+		uint amountFunded;
 	}
 
-	struct ProjectStatus {
+	struct CampaignStatus {
 		bool isAskFulfilled;
-		bool isProjectCompleted;
-		bool isAcceptingProposals;
+		bool isCampaignCompleted;
+		bool isAcceptingFundings;
 		uint suppliedBackAmount;
 	}
 
-	struct Project {
-		ProjectMetadata metadata;
-		ProjectData data;
-		ProjectStatus status;
-		address[] proposers;
+	struct Campaign {
+		CampaignMetadata metadata;
+		CampaignData data;
+		CampaignStatus status;
+		CampaignStatistics statistics;
+		address[] funders;
+		address[] likers;
 	}
 
 	mapping(address => User) public addressToUser;
-	Project[] projects;
-	mapping(uint => mapping(address => Proposal)) public projectToProposal;
+	Campaign[] campaigns;
+	mapping(uint => mapping(address => Funding)) public campaignToFunding;
 
-	mapping(address => uint[]) public addressToProjectIdx;
-	mapping(address => Proposal[]) public userToProposals;
+	mapping(address => uint[]) public addressToCampaignIdx;
+	mapping(address => Funding[]) public userToFundings;
 
-	uint public projectCount = 0;
+	uint public campaignCount = 0;
 
 	modifier userExists() {
 		require(
@@ -69,164 +77,242 @@ contract CryptoFund {
 		_;
 	}
 
-	modifier projectExists(uint projectIdx) {
-		require(projectCount > projectIdx, "Project does not exist");
+	modifier campaignExists(uint campaignIdx) {
+		require(campaignCount > campaignIdx, "Campaign does not exist");
 		_;
 	}
 
-	function updateUser(string memory name, string memory bio) public {
+	function createUser(string memory name, string memory bio) public {
+		uint[] memory likedCampaignsIdx;
 		addressToUser[msg.sender] = User({
 			name: name,
 			bio: bio,
-			userAddress: msg.sender
+			userAddress: msg.sender,
+			timeOfCreation: block.timestamp,
+			likedCampaignsIdx: likedCampaignsIdx
 		});
 	}
 
-	function createProject(
+	function updateUser(
+		string memory name,
+		string memory bio
+	) public userExists {
+		User memory user = addressToUser[msg.sender];
+		user.name = name;
+		user.bio = bio;
+		addressToUser[msg.sender] = user;
+	}
+
+	function createCampaign(
 		string memory pitch,
 		uint askAmount,
 		uint interestRate,
 		string[] memory assetLinks,
-		uint durationInDays,
-		string memory timestamp
+		uint returnTimeInDays
 	) public userExists {
-		ProjectMetadata memory metadata = ProjectMetadata({
+		CampaignMetadata memory metadata = CampaignMetadata({
 			createdBy: addressToUser[msg.sender],
+			idx: campaignCount,
+			timeOfCreation: block.timestamp
+		});
+		CampaignData memory data = CampaignData({
 			pitch: pitch,
-			idx: projectCount,
 			askAmount: askAmount,
 			interestRate: interestRate,
 			assetLinks: assetLinks,
-			durationInDays: durationInDays,
-			timestamp: timestamp
+			returnTimeInDays: returnTimeInDays
 		});
-		ProjectStatus memory status = ProjectStatus({
+		CampaignStatus memory status = CampaignStatus({
 			isAskFulfilled: false,
-			isProjectCompleted: false,
-			isAcceptingProposals: true,
+			isCampaignCompleted: false,
+			isAcceptingFundings: true,
 			suppliedBackAmount: 0
 		});
-		ProjectData memory data = ProjectData({
+		CampaignStatistics memory statistics = CampaignStatistics({
 			likeCount: 0,
-			proposalCount: 0,
-			totalFunded: 0
+			fundingCount: 0,
+			amountFunded: 0
 		});
-		address[] memory proposers;
-		Project memory newProject = Project({
+		address[] memory funders;
+		address[] memory likers;
+		Campaign memory newCampaign = Campaign({
 			metadata: metadata,
 			status: status,
 			data: data,
-			proposers: proposers
+			statistics: statistics,
+			funders: funders,
+			likers: likers
 		});
-		projects.push(newProject);
-		addressToProjectIdx[msg.sender].push(projectCount);
-		projectCount++;
+		campaigns.push(newCampaign);
+		addressToCampaignIdx[msg.sender].push(campaignCount);
+		campaignCount++;
 	}
 
-	function createProposal(
-		uint projectIdx
-	) public payable userExists projectExists(projectIdx) {
-		Project storage project = projects[projectIdx];
+	function getUintIdx(
+		uint[] memory arr,
+		uint item
+	) public pure returns (uint) {
+		//Returns 0 if item is not found
+		for (uint i = 1; i <= arr.length; i++) {
+			if (arr[i - 1] == item) {
+				return i;
+			}
+		}
+		return 0;
+	}
 
+	function getAddressIdx(
+		address[] memory arr,
+		address addr
+	) public pure returns (uint) {
+		//Returns 0 if address is not found
+		for (uint i = 1; i <= arr.length; i++) {
+			if (arr[i - 1] == addr) {
+				return i;
+			}
+		}
+		return 0;
+	}
+
+	function likeCampaign(uint campaignIdx) public campaignExists(campaignIdx) {
+		Campaign storage campaign = campaigns[campaignIdx];
 		require(
-			project.status.isAcceptingProposals,
-			"Project is not accepting proposals"
+			getAddressIdx(campaign.likers, msg.sender) == 0,
+			"User has already liked this campaign"
 		);
-		require(!project.status.isAskFulfilled, "Ask amount already fulfilled");
-		require(msg.value > 0, "Proposal amount must be greater than 0");
+		campaign.likers.push(msg.sender);
+		campaign.statistics.likeCount += 1;
+		User storage user = addressToUser[msg.sender];
+		user.likedCampaignsIdx.push(campaignIdx);
+	}
 
-		// Check if user has already proposed
+	function unlikeCampaign(
+		uint campaignIdx
+	) public campaignExists(campaignIdx) {
+		Campaign storage campaign = campaigns[campaignIdx];
+		uint likerIdx = getAddressIdx(campaign.likers, msg.sender);
+		require(likerIdx > 0, "User has not liked this campaign");
+		delete campaign.likers[likerIdx];
+		campaign.statistics.likeCount -= 1;
+		User storage user = addressToUser[msg.sender];
+		uint likedCampaignIdx = getUintIdx(user.likedCampaignsIdx, campaignIdx);
+		delete user.likedCampaignsIdx[likedCampaignIdx];
+	}
+
+	function createFunding(
+		uint campaignIdx
+	) public payable userExists campaignExists(campaignIdx) {
+		Campaign storage campaign = campaigns[campaignIdx];
+
 		require(
-			projectToProposal[projectIdx][msg.sender].amountProposed > 0,
-			"User has already proposed"
+			campaign.status.isAcceptingFundings,
+			"Campaign is not accepting fundings"
+		);
+		require(
+			!campaign.status.isAskFulfilled,
+			"Ask amount already fulfilled"
+		);
+		require(msg.value > 0, "Funding amount must be greater than 0");
+
+		// Check if user has already funded
+		require(
+			!(campaignToFunding[campaignIdx][msg.sender].amountFunded > 0),
+			"User has already funded"
 		);
 
 		uint usdValue = msg.value.weiToUsd();
 		require(
-			usdValue <= (project.metadata.askAmount - project.data.totalFunded),
+			usdValue <=
+				(campaign.data.askAmount - campaign.statistics.amountFunded),
 			"Proposed amount exceeds remaining ask amount"
 		);
 
-		Proposal memory newProposal = Proposal({
-			proposer: addressToUser[msg.sender],
-			projectIdx: projectIdx,
-			amountProposed: msg.value,
+		Funding memory newFunding = Funding({
+			funder: addressToUser[msg.sender],
+			campaignIdx: campaignIdx,
+			amountFunded: msg.value,
 			isSuppliedBack: false,
 			amountSupplied: 0,
-			bonusSupplied: 0
+			bonusSupplied: 0,
+			timeOfFunding: block.timestamp
 		});
 
-		project.proposers.push(msg.sender);
-		projectToProposal[projectIdx][msg.sender] = newProposal;
-		userToProposals[msg.sender].push(newProposal);
-		project.data.totalFunded += usdValue;
+		campaign.funders.push(msg.sender);
+		campaignToFunding[campaignIdx][msg.sender] = newFunding;
+		userToFundings[msg.sender].push(newFunding);
+		campaign.statistics.amountFunded += usdValue;
 
-		if (project.data.totalFunded >= project.metadata.askAmount) {
-			project.status.isAskFulfilled = true;
-			project.status.isAcceptingProposals = false;
+		uint THRESHOLD_USD = 100;
+		if (
+			campaign.statistics.amountFunded + THRESHOLD_USD >=
+			campaign.data.askAmount
+		) {
+			campaign.status.isAskFulfilled = true;
+			campaign.status.isAcceptingFundings = false;
 		}
 
-		project.data.proposalCount++;
+		campaign.statistics.fundingCount++;
 	}
 
-	function claimFunds(uint projectIdx) public projectExists(projectIdx) {
-		Project storage project = projects[projectIdx];
+	function claimFunds(uint campaignIdx) public campaignExists(campaignIdx) {
+		Campaign storage campaign = campaigns[campaignIdx];
 		require(
-			project.metadata.createdBy.userAddress == msg.sender,
-			"Only project creator can claim funds"
+			campaign.metadata.createdBy.userAddress == msg.sender,
+			"Only campaign creator can claim funds"
 		);
-		require(project.status.isAskFulfilled, "Funding goal not reached yet");
+		require(campaign.status.isAskFulfilled, "Funding goal not reached yet");
 		require(
-			!project.status.isProjectCompleted,
-			"Project already completed"
+			!campaign.status.isCampaignCompleted,
+			"Campaign already completed"
 		);
 
-		uint amountToTransfer = project.data.totalFunded.weiToUsd();
+		uint amountToTransfer = campaign.statistics.amountFunded.weiToUsd();
 		payable(msg.sender).transfer(amountToTransfer);
 
-		project.status.isProjectCompleted = true;
-		project.status.suppliedBackAmount = 0; // Initialize to zero
+		campaign.status.isCampaignCompleted = true;
+		campaign.status.suppliedBackAmount = 0; // Initialize to zero
 	}
 
 	function supplyFundsBack(
-		uint projectIdx
-	) public payable projectExists(projectIdx) {
-		Project storage project = projects[projectIdx];
-		require(project.status.isAskFulfilled, "Funding goal not reached yet");
-		require(project.status.isProjectCompleted, "Project not yet completed");
+		uint campaignIdx
+	) public payable campaignExists(campaignIdx) {
+		Campaign storage campaign = campaigns[campaignIdx];
+		require(campaign.status.isAskFulfilled, "Funding goal not reached yet");
+		require(
+			campaign.status.isCampaignCompleted,
+			"Campaign not yet completed"
+		);
 
-		uint repaymentAmount = project.metadata.askAmount +
-			((project.metadata.askAmount *
-				project.metadata.interestRate *
-				(project.metadata.durationInDays / 30)) / 100);
+		uint repaymentAmount = campaign.data.askAmount +
+			((campaign.data.askAmount *
+				campaign.data.interestRate *
+				(campaign.data.returnTimeInDays / 30)) / 100);
 		uint ethValue = repaymentAmount.weiToUsd();
 		require(msg.value >= ethValue, "Insufficient repayment amount");
 
-		// Calculate total bonus pool based on project ask and duration
-		uint totalBonus = (project.metadata.askAmount *
-			project.metadata.interestRate *
-			project.metadata.durationInDays) / (100 * 30); // Interest rate as a percentage
+		// Calculate total bonus pool based on campaign ask and duration
+		uint totalBonus = (campaign.data.askAmount *
+			campaign.data.interestRate *
+			campaign.data.returnTimeInDays) / (100 * 30); // Interest rate as a percentage
 
-		for (uint i = 0; i < project.proposers.length; i++) {
-			address proposerAddress = project.proposers[i];
-			Proposal storage proposal = projectToProposal[projectIdx][
-				proposerAddress
+		for (uint i = 0; i < campaign.funders.length; i++) {
+			address funderAddress = campaign.funders[i];
+			Funding storage funding = campaignToFunding[campaignIdx][
+				funderAddress
 			];
-			uint userBonus = (proposal.amountProposed * totalBonus) /
-				project.metadata.askAmount; // Proportional bonus based on investment
+			uint userBonus = (funding.amountFunded * totalBonus) /
+				campaign.data.askAmount; // Proportional bonus based on investment
 
-			proposal.isSuppliedBack = true;
-			proposal.amountSupplied = proposal.amountProposed; // Update for clarity
-			proposal.bonusSupplied = userBonus;
+			funding.isSuppliedBack = true;
+			funding.amountSupplied = funding.amountFunded; // Update for clarity
+			funding.bonusSupplied = userBonus;
 
-			// Send payout directly to proposer (including bonus)
-			payable(proposerAddress).transfer(
-				proposal.amountProposed + userBonus
-			);
+			// Send payout directly to funder (including bonus)
+			payable(funderAddress).transfer(funding.amountFunded + userBonus);
 		}
 
-		project.status.isProjectCompleted = true;
-		project.status.suppliedBackAmount = msg.value; // Record the supplied back amount
+		campaign.status.isCampaignCompleted = true;
+		campaign.status.suppliedBackAmount = msg.value; // Record the supplied back amount
 	}
 
 	function getUserData(
@@ -235,23 +321,25 @@ contract CryptoFund {
 		return addressToUser[userAddress];
 	}
 
-	function getUserProjects(
+	function getUserCampaigns(
 		address userAddress
 	) public view returns (uint[] memory) {
-		return addressToProjectIdx[userAddress];
+		return addressToCampaignIdx[userAddress];
 	}
 
-	function getProjectFeed() public view returns (Project[] memory) {
-		return projects;
+	function getCampaignFeed() public view returns (Campaign[] memory) {
+		return campaigns;
 	}
 
-	function getProject(uint projectIdx) public view returns (Project memory) {
-		return projects[projectIdx];
+	function getCampaign(
+		uint campaignIdx
+	) public view returns (Campaign memory) {
+		return campaigns[campaignIdx];
 	}
 
-	function getUserProposals(
+	function getUserFundings(
 		address userAddress
-	) public view returns (Proposal[] memory) {
-		return userToProposals[userAddress];
+	) public view returns (Funding[] memory) {
+		return userToFundings[userAddress];
 	}
 }
